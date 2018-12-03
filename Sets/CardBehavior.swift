@@ -52,7 +52,7 @@ class CardBehavior: UIDynamicBehavior {
     func addItem (_ item: UIDynamicItem) {
         collisionBehavior.addItem(item)
         itemBehavior.addItem(item)
-        push(item)
+        //push(item)
     }
     
     func removeItem (_ item: UIDynamicItem) {

@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     }
     
     private var faceUpCardViewsMatch: Bool {
-        return faceUpCardViews.count == 2 && faceUpCardViews[0].rank == faceUpCardViews[1].rank && faceUpCardViews[0].suit == faceUpCardViews[1].suit
+        return faceUpCardViews.count == 3 && faceUpCardViews[0].suit == faceUpCardViews[1].suit && faceUpCardViews[1].suit == faceUpCardViews[2].suit
     }
     
     override func viewDidLoad() {
@@ -31,9 +31,9 @@ class ViewController: UIViewController {
         
         var cards = [PlayingCard]()
         
-        for _ in 1...((cardViews.count+1)/2) {
+        for _ in 1...((cardViews.count+1)/3) {
             let card = deck.draw()!
-            cards += [card,card]
+            cards += [card,card,card]
         }
         
         for cardView in cardViews {
@@ -46,13 +46,15 @@ class ViewController: UIViewController {
         }
     }
     
-    var lastChosenCardView: PlayingCardView?
+    var lastChosenCardsView: [PlayingCardView] = []
     
     @objc func flipCard (_ recognizer: UITapGestureRecognizer){
         switch recognizer.state {
         case .ended:
-            if  let chosenCardView = recognizer.view as? PlayingCardView, faceUpCardViews.count < 2 {
-                lastChosenCardView = chosenCardView
+            if  let chosenCardView = recognizer.view as? PlayingCardView, faceUpCardViews.count < 3 {
+                if !lastChosenCardsView.contains(chosenCardView){
+                    lastChosenCardsView.append(chosenCardView)
+                }
                 cardBehavior.removeItem(chosenCardView)
                 UIView.transition(
                     with: chosenCardView,
@@ -88,12 +90,12 @@ class ViewController: UIViewController {
                                                 $0.alpha = 1
                                                 $0.transform = .identity
                                             }
-                                    }
+                                        }
                                     )
-                            }
+                                }
                             )
-                        } else if self.faceUpCardViews.count == 2 {
-                            if chosenCardView == self.lastChosenCardView {
+                        } else if self.faceUpCardViews.count == 3 {
+                            if self.lastChosenCardsView.contains(chosenCardView) {
                                 self.faceUpCardViews.forEach{ cardView in
                                     UIView.transition(
                                         with: cardView,
@@ -102,8 +104,9 @@ class ViewController: UIViewController {
                                         animations: { cardView.isFaceUp = false },
                                         completion: { finished in
                                             self.cardBehavior.addItem(cardView)
-                                    }
+                                        }
                                     )
+                                    self.lastChosenCardsView.removeAll()
                                 }
                             }
                         } else {
@@ -111,7 +114,7 @@ class ViewController: UIViewController {
                                 self.cardBehavior.addItem(chosenCardView)
                             }
                         }
-                }
+                    }
                 )
             }
         default:
