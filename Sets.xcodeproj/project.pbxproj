@@ -70,6 +70,7 @@
 				49CC0F7021B50414008F2C47 /* PlayingCardView.swift */,
 				49CC0F5D21B5031D008F2C47 /* Main.storyboard */,
 				49CC0F6021B50328008F2C47 /* Assets.xcassets */,
+				49CC0F6521B50328008F2C47 /* Info.plist */,
 			);
 			path = Sets;
 			sourceTree = "<group>";
@@ -79,7 +80,6 @@
 			children = (
 				49CC0F5921B5031D008F2C47 /* AppDelegate.swift */,
 				49CC0F6221B50328008F2C47 /* LaunchScreen.storyboard */,
-				49CC0F6521B50328008F2C47 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
